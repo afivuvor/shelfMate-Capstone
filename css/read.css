@@ -1,0 +1,55 @@
+#uploadSection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1px 0;
+}
+
+#uploadSection input,
+#uploadSection button {
+    padding: 10px;
+    margin: 5px;
+    font-size: 15px;
+    gap: 50px;
+    font-weight: 100;
+    font-family: libre franklin, sans-serif;
+    color: #606062;
+}
+
+#reader {
+    width: 100%;
+    max-width: 100vw;
+    height: 90vh;
+    overflow: scroll;
+    border: 1px solid #ccc;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    background-color: #f9f9f9;
+}
+
+#reader object {
+    width: 100%;
+    height: 100%;
+}
+
+#reader img {
+    max-width: 140px;
+    margin-bottom: 15px;
+}
+
+#reader p {
+    font-size: 17px;
+    gap: 50px;
+    font-weight: 100;
+    font-family: libre franklin, sans-serif;
+    color: #606062;
+}
+
+canvas {
+    display: block;
+    margin: 0 auto 10px;
+}

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShelfMate - Read</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/read.css">
+    <style>
+        #uploadSection {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 1px 0;
+        }
+
+        #uploadSection input,
+        #uploadSection button {
+            padding: 10px;
+            margin: 5px;
+            font-size: 15px;
+            gap: 50px;
+            font-weight: 100;
+            font-family: 'Libre Franklin', sans-serif;
+            color: #606062;
+        }
+
+        #reader {
+            width: 100%;
+            height: 80vh;
+            overflow: auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+
+        #reader canvas {
+            display: block;
+            margin: 10px auto;
+            max-width: 100%;
+            height: auto;
+        }
+
+        #reader img {
+            max-width: 140px;
+            margin-bottom: 15px;
+        }
+
+        #reader p {
+            font-size: 17px;
+            gap: 50px;
+            font-weight: 100;
+            font-family: 'Libre Franklin', sans-serif;
+            color: #606062;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="top-navbar">
+        <div class="logo">
+            <span class="logo-part1">Shelf</span><span class="logo-part2">Mate</span>
+        </div>
+        <div class="menu">
+            <a href="/" class="nav-link">Home</a>
+            <a href="aboutBook.html" class="nav-link">About Book</a> 
+            <a href="read.html" class="nav-link">Read</a>
+            <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+            <a href="catalogue.html" class="nav-link">Catalogue</a>
+            <a href="profile.html" class="nav-link">Profile</a>
+        </div>
+        <input type="text" class="search-box" id="searchInput" placeholder="Search">
+    </div>
+
+    <div id="uploadSection">
+        <input type="file" accept=".pdf,.epub" id="fileInput">
+        <button id="submitButton">Submit</button>
+    </div>
+    
+    <div id="reader">
+        <img src="img/reading.png" alt="Reading Icon">
+        <p>Hi friend! Upload a book to start reading or select one from your catalogue!</p>
+    </div>
+
+    <!-- PDF.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const fileInput = document.getElementById('fileInput');
+            const submitButton = document.getElementById('submitButton');
+            const reader = document.getElementById('reader');
+    
+            submitButton.addEventListener('click', function() {
+                const file = fileInput.files[0];
+                if (file) {
+                    if (file.type === 'application/pdf') {
+                        renderPDF(file);
+                    } else {
+                        alert('Unsupported file type');
+                    }
+                } else {
+                    alert('No file selected');
+                }
+            });
+    
+            function renderPDF(file) {
+                const fileURL = URL.createObjectURL(file);
+                reader.innerHTML = ''; // Clear previous content
+                const loadingTask = pdfjsLib.getDocument(fileURL);
+                loadingTask.promise.then(pdf => {
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                        pdf.getPage(i).then(page => {
+                            const scale = 1.5;
+                            const viewport = page.getViewport({ scale });
+                            const canvas = document.createElement('canvas');
+                            const context = canvas.getContext('2d');
+                            canvas.height = viewport.height;
+                            canvas.width = viewport.width;
+                            const renderContext = {
+                                canvasContext: context,
+                                viewport: viewport
+                            };
+                            page.render(renderContext);
+                            reader.appendChild(canvas);
+                        });
+                    }
+                }).catch(error => {
+                    console.error('Error rendering PDF:', error);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

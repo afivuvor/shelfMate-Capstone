@@ -1,0 +1,72 @@
+.profile-container {
+    width: 80%;
+    margin: 50px auto;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.profile-header {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #525354;
+    gap: 50px;
+    font-weight: 500;
+    font-family: libre franklin, sans-serif;
+}
+
+.user-details, .statistics {
+    margin-bottom: 20px;
+}
+
+.user-details img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    display: block;
+    margin: 0 auto 20px;
+}
+
+.user-details {
+    margin-bottom: 30px;
+    font-family: libre franklin, sans-serif;
+}
+
+.user-details p, .statistics p {
+    font-weight: 500;
+    margin: 10px 0;
+    gap: 50px;
+    font-size: 17.5px;
+    color: rgb(226, 65, 108);
+}
+
+.user-details span, .statistics span {
+    font-weight: 100;
+    margin: 10px 0;
+    gap: 50px;
+    font-size: 17.5px;
+    color: #575759;
+}
+
+.settings-signout {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+
+.settings-signout a {
+    text-decoration: none;
+    color: #000;
+    font-size: 10px;
+}
+
+.settings-signout a:hover {
+    color: #007BFF;
+}
+
+.settings-signout img {
+    width: 23px;
+    height: 23px;
+}

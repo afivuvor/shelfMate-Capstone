@@ -1,0 +1,20 @@
+
+Run html files:             python3 -m http.server 8001
+Start flask server:         flask run
+
+
+
+{
+    "_id": 1,
+    "name": "",
+	"password": "",
+  	"username": "",
+    "email": "",
+	"gender": "",
+    "occupation": "",
+  	"badges": [],
+  	"streak": 0,
+  	"points": 0,
+  	"leaderboard_position": 0,
+  	"link_to_catalogue": ""
+}
