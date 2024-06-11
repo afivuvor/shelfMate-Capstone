@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShelfMate - Read</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/read.css">
+</head>
+
+<body>
+    <div class="top-navbar">
+        <div class="logo">
+            <span class="logo-part1">Shelf</span><span class="logo-part2">Mate</span>
+        </div>
+        <div class="menu">
+            <a href="/" class="nav-link">Home</a>
+            <a href="aboutBook.html" class="nav-link">About Book</a> 
+            <a href="read.html" class="nav-link">Read</a>
+            <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+            <a href="catalogue.html" class="nav-link">Catalogue</a>
+            <a href="profile.html" class="nav-link">Profile</a>
+        </div>
+        <input type="text" class="search-box" id="searchInput" placeholder="Search">
+    </div>
+
+    <div id="uploadSection">
+        <input type="file" accept=".pdf" id="fileInput">
+        <button id="submitButton" onclick="loadFromPath()">Submit</button>
+        <div class="navigation">
+            <span>Page: <span id="page_num">0</span> / <span id="page_count">0</span></span>
+        </div>
+    </div>
+    
+    <div id="reader">
+        <img src="img/reading.png" alt="Reading Icon">
+        <p>Hi friend! Upload a book to start reading or select one from your catalogue!</p>
+        <canvas id="pdfViewer"></canvas>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <script src="js/read.js"></script> <!-- Script for reading books -->
+    <script src="js/search.js"></script> <!-- Script for book searches -->
+</body>
+</html>

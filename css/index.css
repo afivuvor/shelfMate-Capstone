@@ -1,0 +1,145 @@
+body {
+    font-family: libre franklin, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Adjusted to auto-fill */
+    gap: 20px 0; /* Adjusted the gap */
+    padding: 20px;
+}
+
+.book {
+    width: calc(85% - 20px); /* Adjust the width to accommodate the margin */
+    height: 100%;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow effect */
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+    margin: 0 0px; /* Set margin for left and right sides */
+}
+
+.book img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.book:hover::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.book:hover::before {
+    content: "View Book Details";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 18px;
+    z-index: 2;
+    text-align: center;
+}
+
+.top-navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: #ffffff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+}
+
+.logo {
+    font-weight: 20;
+    font-size: 24px;
+    margin-right: 80px; /* Adjusted margin for spacing */
+}
+
+.logo .logo-part1 {
+    color: #525254;
+}
+
+.logo .logo-part2 {
+    color: rgb(226, 65, 108);
+}
+
+.menu {
+    display: flex;
+    gap: 50px;
+    margin-right: auto; /* Pushes the menu items to the left */
+}
+
+.menu a {
+    text-decoration: none;
+    color: #6a6969;
+    font-size: 15px;
+    font-weight: 100;
+    font-family: libre franklin, sans-serif;
+    position: relative;
+}
+
+.menu a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; /* Adjust as needed to position the line */
+    left: 0;
+    width: 0; /* Initially hidden */
+    height: 2px; /* Thickness of the line */
+    background-color: rgb(226, 65, 108); /* Pink line color */
+    transition: width 0.3s; /* Add transition for smooth effect */
+}
+
+.menu a:hover::after {
+    width: 100%; /* Show the line on hover */
+}
+
+.search-box {
+    width: 280px; 
+    height: 30px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 14px;
+    margin-right: 20px; 
+    position: relative;
+}
+
+.search-box:focus {
+    border: 1.5px solid rgb(226, 65, 108); 
+    outline: none; 
+}
+
+.search-icon {
+    width: 24px;
+    height: 24px;
+    background-image: url('search-icon.png'); /* Add your search icon image URL here */
+    background-size: cover;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    /* Responsive styles for smaller screens */
+    .logo {
+      font-size: 20px;
+      margin-right: 10px; /* Adjusted margin for spacing */
+    }
+
+    .menu {
+      display: none; /* Hide the menu items */
+    }
+}
+

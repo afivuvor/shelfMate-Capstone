@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShelfMate - Leaderboard</title>
+  <link rel="stylesheet" href="css/leaderboard.css">
+  <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+  <div class="top-navbar">
+    <div class="logo">
+      <span class="logo-part1">Shelf</span><span class="logo-part2">Mate</span>
+    </div>
+    <div class="menu">
+      <a href="/" class="nav-link">Home</a>
+      <a href="/" class="nav-link">About Book</a> 
+      <a href="read.html" class="nav-link">Read</a>
+      <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+      <a href="catalogue.html" class="nav-link">Catalogue</a>
+      <a href="profile.html" class="nav-link">Profile</a>
+    </div>
+    <input type="text" class="search-box" id="searchInput" placeholder="Search">
+  </div>
+
+  <div class="leaderboard-container">
+      <div class="leaderboard-header">Top Readers</div>
+      <table class="leaderboard-table">
+        <thead>
+          <tr>
+            <!-- <th style="color: rgb(226, 65, 108);">Rank</th> -->
+            <th>Rank</th>
+            <th>User</th>
+            <th>Points</th>
+            <th>Badges</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboardBody">
+          <!-- Leaderboard rows will be inserted here -->
+        </tbody>
+      </table>
+  </div>
+
+  
+  <!-- Javascript -->
+  <script src="js/leaderboard.js"></script>
+  <script src="js/search.js"></script>
+  <script>
+  </script>
+</body>
+</html>

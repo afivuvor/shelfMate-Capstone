@@ -1,0 +1,66 @@
+#uploadSection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+#uploadSection input,
+#uploadSection button {
+    padding: 10px;
+    margin: 5px;
+    font-size: 15px;
+    gap: 50px;
+    font-weight: 100;
+    font-family: libre franklin, sans-serif;
+    color: #606062;
+}
+
+.navigation {
+    font-weight: 100;
+    font-family: libre franklin, sans-serif;
+    color: #606062;
+}
+
+#reader {
+    width: 100%;
+    height: 120vh;
+    overflow: auto;
+    border: 1px solid #ccc;
+    position: relative;
+    background-color: #f9f9f9;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+#reader canvas {
+    width: 55%;
+    height: 100%;
+    display: block;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.navigation span {
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+#reader img {
+    margin-top: 12%;
+    max-width: 140px;
+    margin-bottom: 15px;
+}
+
+#reader p {
+    font-size: 17px;
+    gap: 50px;
+    font-weight: 100;
+    font-family: libre franklin, sans-serif;
+    color: #606062;
+}

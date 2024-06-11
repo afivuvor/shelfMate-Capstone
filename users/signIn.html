@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #ffffff; /* White background */
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 100px auto;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: #f9f9f9;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #cccccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      outline: none;
+      border: 1.5px solid rgb(226, 65, 108);
+    }
+
+    input[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      background-color: rgb(226, 65, 108);
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    input[type="submit"]:hover {
+      background-color: rgb(235, 156, 177);
+    }
+
+    .sign-up {
+      text-align: center;
+    }
+
+    .sign-up a {
+      color: rgb(226, 65, 108);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Sign In</h2>
+    <form id="signInForm">
+      <input type="text" id="username" placeholder="Username" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <input type="submit" value="Sign In">
+    </form>
+    <div class="sign-up">
+      <p>Don't have an account? <a href="signUp.html">Sign Up</a></p>
+    </div>
+  </div>
+
+  <!-- <script>
+    document.getElementById('signInForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      const response = await fetch('http://127.0.0.1:8080/signIn', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (response.ok) {
+        window.location.href = '../index.html'; // Redirect to index.html
+      } else {
+        alert('Sign in failed. Please check your username and password.');
+      }
+    });
+  </script> -->
+
+  <script>
+    document.getElementById('signInForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+
+        if (username === '' || password === '') {
+            alert('Please fill in both fields.');
+            return;
+        }
+
+        fetch('http://127.0.0.1:8080/signIn', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.token) {
+                localStorage.setItem('jwt', data.token);
+                if (localStorage.getItem('jwt')) {
+                    window.location.href = '../index.html';
+                } else {
+                    alert('Failed to store authentication token.');
+                }
+            } else {
+                alert(data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while signing in. Please try again later.');
+        });
+    });
+  </script>
+</body>
+</html>

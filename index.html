@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShelfMate - Home</title>
+  <link rel="stylesheet" href="css/index.css">
+  <style>
+    .active {
+      color: rgb(226, 65, 108);
+    } 
+  </style>
+</head>
+<body>
+  <div class="top-navbar">
+    <div class="logo">
+      <span class="logo-part1">Shelf</span><span class="logo-part2">Mate</span>
+    </div>
+    <div class="menu">
+      <a href="/" class="active">Home</a>
+      <a href="" class="">About Book</a> 
+      <a href="read.html" class="">Read</a>
+      <a href="leaderboard.html" class="">Leaderboard</a>
+      <a href="catalogue.html" class="">Catalogue</a>
+      <a href="profile.html" class="">Profile</a>
+    </div>
+    <input type="text" class="search-box" id="searchInput" placeholder="Search">
+  </div>
+
+  <div class="container" id="bookContainer">
+    <!-- Book covers will be dynamically added here -->
+  </div>
+
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <div id="modalBookDetails"></div>
+    </div>
+  </div>
+
+
+  <script src="js/search.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const bookContainer = document.getElementById("bookContainer");
+
+        function displayBooks(data) {
+            bookContainer.innerHTML = ''; // Clear existing content
+            const books = data.items; // Access the array of books from the "items" key
+            books.forEach(book => {
+                const coverImageURL = getCoverImageURL(book);
+                if (coverImageURL) {
+                    const bookDiv = document.createElement("div");
+                    bookDiv.classList.add("book");
+                    bookDiv.innerHTML = `<img src="${coverImageURL}" alt="${book.volumeInfo.title}">`;
+                    bookDiv.addEventListener("click", () => {
+                        // Redirect to the About Book page with the book ID as a query parameter
+                        window.location.href = `aboutBook.html?bookId=${book.id}`;
+                    });
+                    bookContainer.appendChild(bookDiv);
+                }
+            });
+        }
+
+        function getCoverImageURL(book) {
+            const imageLinks = book.volumeInfo.imageLinks;
+            if (imageLinks) {
+                // Try to use the highest resolution available
+                return imageLinks.extraLarge || imageLinks.large || imageLinks.medium || imageLinks.thumbnail || null;
+            }
+            return null;
+        }
+
+        const searchResults = sessionStorage.getItem('searchResults');
+        if (searchResults) {
+            const data = JSON.parse(searchResults);
+            displayBooks(data);
+        } else {
+            // Fetch and display romance books if no search results are present
+            fetch('http://127.0.0.1:8080/category/romance')
+                .then(response => response.json())
+                .then(data => {
+                    displayBooks(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching romance books:', error);
+                });
+        }
+    });
+  </script>
+
+</body>
+</html>

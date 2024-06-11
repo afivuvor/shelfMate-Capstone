@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #ffffff; /* White background */
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 100px auto;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: #f9f9f9;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    input[type="text"], input[type="password"], select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #cccccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    input[type="checkbox"] {
+      margin-bottom: 20px;
+      color: rgb(149, 149, 149);
+    }
+
+    input[type="text"]:focus, input[type="password"]:focus, select:focus {
+      outline: none;
+      border: 1.5px solid rgb(226, 65, 108);
+    }
+
+    label {
+      color: rgb(122, 122, 122);
+      font-size: 13.7px;
+    }
+
+    input[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      background-color: rgb(226, 65, 108);
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-size: medium;
+      margin-top: 20px;
+    }
+
+    input[type="submit"]:hover {
+      background-color: rgb(235, 156, 177);
+    }
+
+    .sign-up {
+      text-align: center;
+    }
+
+    .sign-up a {
+      color: rgb(226, 65, 108);
+      text-decoration: none;
+    }
+
+    select {
+      color: rgb(113, 113, 113); 
+      font-size: 13.9px;
+    }
+
+    select option {
+      color: rgb(44, 44, 44);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Sign Up</h2>
+    <form id="signup-form">
+      <input type="text" placeholder="Name" name="name" id="name" required>
+      <input type="text" placeholder="Email" name="email" id="email" required>
+      <select name="gender" id="gender" required>
+        <option value="" disabled selected>Gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="non-binary">Non-binary</option>
+        <option value="transgender">Transgender</option>
+        <option value="neutral">Gender Neutral</option>
+        <option value="other">Other</option>
+      </select>
+      <select name="occupation" id="occupation" required>
+        <option value="" disabled selected>Occupation Category</option>
+        <option value="male">Student</option>
+        <option value="female">Full-time worker</option>
+        <option value="non-binary">Part-time worker</option>
+        <option value="transgender">Intern</option>
+        <option value="neutral">Contractor</option>
+        <option value="other">Self-employed</option>
+      </select>
+      <input type="text" placeholder="Username" name="username" id="username" required>
+      <input type="password" id="password" placeholder="Password" name="password" required>
+      <label>
+        <input type="checkbox" onclick="togglePasswordVisibility()">Show Password
+      </label>
+      <input type="password" id="confirm-password" placeholder="Confirm Password" required>
+      <input type="submit" name="submit" id="submit" value="Sign Up">
+    </form>
+    <div class="sign-up">
+      <p>Already have an account? <a href="signIn.html">Sign In!</a></p>
+    </div>
+  </div>
+  <script>
+    function togglePasswordVisibility() {
+      var passwordField = document.getElementById("password");
+      var confirmPasswordField = document.getElementById("confirm-password");
+      if (passwordField.type === "password") {
+        passwordField.type = "text";
+        confirmPasswordField.type = "text";
+      } else {
+        passwordField.type = "password";
+        confirmPasswordField.type = "password";
+      }
+    }
+
+    document.getElementById("signup-form").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const gender = document.getElementById("gender").value;
+      const username = document.getElementById("username").value;
+      const occupation = document.getElementById("occupation").value;
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirm-password").value;
+
+      if (password !== confirmPassword) {
+        alert("Passwords do not match!");
+        return;
+      }
+
+      const userData = {
+        name: name,
+        email: email,
+        gender: gender,
+        username: username,
+        occupation: occupation,
+        password: password
+      };
+
+      fetch("http://127.0.0.1:8080/signUp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(userData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          alert(data.error);
+        } else {
+          alert("User registered successfully!");
+          window.location.href = "signIn.html";
+        }
+      })
+      .catch(error => console.error("Error:", error));
+    });
+  </script>
+</body>
+</html>
