@@ -5,33 +5,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('jwt'); // Assuming the token is stored in localStorage
 
     try {
-      // const response = await fetch(`${baseURL}/leaderboard`, {
-      //   method: 'GET',
-      //   headers: {
-      //     'Authorization': `Bearer ${token}`
-      //   }
-      // });
-
-      fetch('http://127.0.0.1:8080/leaderboard', {
+      const response = await fetch(`${baseURL}/leaderboard`, {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
         }
-      })
+      });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        throw new Error('Failed to fetch leaderboard data');
       }
 
-      const data = await response.json();
-      const leaderboardBody = document.getElementById('leaderboardBody');
-      leaderboardBody.innerHTML = ''; // Clear any existing content
+      const leaderboardData = await response.json();
 
-      data.forEach((user, index) => {
-        // Render the badges as a comma-separated list
-        const badgesList = Array.isArray(user.badges) ? user.badges.join(", ") : "N/A";
+      const leaderboardBody = document.getElementById('leaderboardBody');
+      leaderboardBody.innerHTML = ''; // Clear existing rows
+
+      leaderboardData.forEach((user, index) => {
         const row = document.createElement('tr');
+        let badgesList = "None"; // Default if no badges
+
+        if (user.badges.length > 0) {
+          badgesList = user.badges.join(", ");
+        }
+
         row.innerHTML = `
           <td>${index + 1}</td>
           <td>${user.username}</td>
@@ -41,12 +39,9 @@ document.addEventListener('DOMContentLoaded', () => {
         leaderboardBody.appendChild(row);
       });
     } catch (error) {
-      console.error('Error fetching leaderboard data:', error);
+      console.error('Error:', error);
     }
   }
-  
-  document.addEventListener('DOMContentLoaded', () => {
-    console.log("DOM fully loaded and parsed");
-    fetchAndDisplayLeaderboard();  // Calling the fetch function here to make sure it's being executed.
-  });
+
+  fetchAndDisplayLeaderboard();
 });

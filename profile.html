@@ -46,42 +46,8 @@
     </div>
     
     <script src="js/search.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const token = localStorage.getItem('jwt');
+    <script src="js/profile.js"></script>
     
-            if (!token) {
-                console.error('User not authenticated');
-                return;
-            }
-    
-            fetch('http://127.0.0.1:8080/getUserProfile', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    console.error(data.error);
-                    return;
-                }
-    
-                document.getElementById('username').textContent = data.username;
-                document.getElementById('email').textContent = data.email;
-                document.getElementById('gender').textContent = data.gender || 'Not specified';
-                document.getElementById('booksRead').textContent = data.booksRead;
-                document.getElementById('pointsEarned').textContent = data.points;
-                document.getElementById('badgesEarned').textContent = data.badges;
-                document.getElementById('streaks').textContent = `${data.streak} days`;
-            })
-            .catch(error => {
-                console.error('Error fetching user profile:', error);
-            });
-        });
-    </script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // Function to get query parameters from the URL

@@ -244,64 +244,6 @@ def update_badges():
     return jsonify({"message": "Badge updated successfully"}), 200
 
 
-# # Update leaderboard position endpoint
-# @app.route("/updateLeaderboardPosition", methods=['POST'])
-# @cross_origin()
-# def updateLeaderboardPosition():
-#     auth_header = request.headers.get('Authorization')
-#     if not auth_header or not auth_header.startswith("Bearer "):
-#         return jsonify({"error": "Missing or invalid token"}), 401
-
-#     token = auth_header.split(" ")[1]
-#     try:
-#         data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-#         username = data['username']
-#     except jwt.ExpiredSignatureError:
-#         return jsonify({"error": "Token has expired"}), 401
-#     except jwt.InvalidTokenError:
-#         return jsonify({"error": "Invalid token"}), 401
-
-#     # Fetch user's points and badges
-#     user_data = get_user_data(username)
-#     points = user_data.get('points', 0)
-#     badges = user_data.get('badges', [])
-
-#     # Calculate leaderboard score
-#     leaderboard_score = calculate_leaderboard_score(points, badges)
-
-#     try:
-#         response = users_table.update_item(
-#             Key={'username': username},
-#             UpdateExpression="set leaderboard_position = :l",
-#             ExpressionAttributeValues={':l': leaderboard_score},
-#             ReturnValues="UPDATED_NEW"
-#         )
-#     except Exception as e:
-#         raise Exception("Error updating leaderboard position: " + str(e))
-    
-#     return jsonify({"message": "Leaderboard position updated successfully"}), 200
-
-
-# # Helper functions for updating leaderboard position
-# def get_user_data(username):
-#     try:
-#         response = users_table.get_item(
-#             Key={'username': username}
-#         )
-#         user_data = response.get('Item')
-#         if user_data:
-#             return user_data
-#         else:
-#             raise Exception("User not found")
-#     except Exception as e:
-#         raise Exception("Error fetching user data: " + str(e))
-
-# def calculate_leaderboard_score(points, badges):
-#     # Define your logic to calculate the leaderboard score based on points and badges
-#     leaderboard_score = points + len(badges)
-#     return leaderboard_score
-
-
 # Leaderboard endpoint
 @app.route("/leaderboard", methods=['GET'])
 @cross_origin()
@@ -313,33 +255,29 @@ def leaderboard():
     token = auth_header.split(" ")[1]
     try:
         data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-        username = data['username']
     except jwt.ExpiredSignatureError:
         return jsonify({"error": "Token has expired"}), 401
     except jwt.InvalidTokenError:
         return jsonify({"error": "Invalid token"}), 401
 
     try:
-        response = users_table.scan()  # Fetch all users from the database
+        # Scan the users table and sort by points in descending order
+        response = users_table.scan()
         users = response.get('Items', [])
-        
-        # Sort users by points in descending order
-        sorted_users = sorted(users, key=lambda user: user.get('points', 0), reverse=True)
-        
-        # Prepare leaderboard format to send to front-end
-        leaderboard = [
-            {
-                "username": user.get("username"),
-                "points": user.get("points", 0),
-                "badges": ", ".join(user.get("badges", []))  # Join the array into a comma-separated string
-            }
-            for user in sorted_users
-        ]
-    except Exception as e:
-        logging.error(f"Error retrieving leaderboard data: {str(e)}")
-        return jsonify({"error": "Internal server error"}), 500
+        sorted_users = sorted(users, key=lambda x: int(x.get('points', 0)), reverse=True)
 
-    return jsonify(leaderboard), 200
+        # Only return necessary fields
+        leaderboard_data = [{
+            "username": user.get("username"),
+            "points": int(user.get("points", 0)),
+            "badges": user.get("badges", [])
+        } for user in sorted_users]
+
+        return jsonify(leaderboard_data), 200
+    except Exception as e:
+        logging.error(f"Error fetching leaderboard: {str(e)}")
+        return jsonify({"error": "Internal server error"}), 500
+    
 
 
 # Profile information
@@ -370,7 +308,7 @@ def getUserProfile():
             "email": user_data.get('email'),
             "gender": user_data.get('gender'),
             "points": user_data.get('points', 0),
-            "badges": len(user_data.get('badges', [])),
+            "badges": user_data.get('badges', []),
             "streak": user_data.get('streak', 0),
             # Assuming you have a booksRead field in your database
             # "booksRead": user_data.get('booksRead', 0)

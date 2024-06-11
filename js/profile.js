@@ -25,8 +25,14 @@ document.addEventListener('DOMContentLoaded', () => {
             'Authorization': `Bearer ${token}`
         }
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to fetch user profile');
+        }
+        return response.json();
+    })
     .then(data => {
+        console.log(data); // Log data received from the backend for debugging
         if (data.error) {
             console.error(data.error);
             return;
@@ -34,10 +40,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.getElementById('username').textContent = data.username;
         document.getElementById('email').textContent = data.email;
-        document.getElementById('gender').textContent = data.gender || 'Not specified';
+        document.getElementById('gender').textContent = data.gender;
         document.getElementById('booksRead').textContent = data.booksRead;
         document.getElementById('pointsEarned').textContent = data.points;
-        document.getElementById('badgesEarned').textContent = data.badges;
+        
+        // Display badges as a comma-separated list of badge names
+        const badgesList = Array.isArray(data.badges) && data.badges.length > 0 ? data.badges.join(", ") : "None";
+        document.getElementById('badgesEarned').textContent = badgesList;
+
         document.getElementById('streaks').textContent = `${data.streak} days`;
     })
     .catch(error => {
