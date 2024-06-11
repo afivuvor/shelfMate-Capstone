@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShelfMate - Read</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/read.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.5/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/epub.js/0.2.13/epub.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/epub.js/0.2.13/epub.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/epubjs@0.3.88/dist/epub.min.js"></script>
+    <script src="js/read.js"></script> <!-- Script for reading books -->
+    <script src="js/search.js"></script> <!-- Script for book searches -->
+</head>
+
+<body>
+    <div class="top-navbar">
+        <div class="logo">
+            <span class="logo-part1">Shelf</span><span class="logo-part2">Mate</span>
+        </div>
+        <div class="menu">
+            <a href="/" class="nav-link">Home</a>
+            <a href="aboutBook.html" class="nav-link">About Book</a> 
+            <a href="read.html" class="nav-link">Read</a>
+            <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+            <a href="catalogue.html" class="nav-link">Catalogue</a>
+            <a href="profile.html" class="nav-link">Profile</a>
+        </div>
+        <input type="text" class="search-box" id="searchInput" placeholder="Search">
+    </div>
+
+    <div id="uploadSection">
+        <input type="file" accept=".pdf, .epub, application/epub+zip" id="fileInput">
+        <button id="submitButton">Submit</button>
+    </div>
+    
+    <div id="reader">
+        <img src="img/reading.png" alt="Reading Icon">
+        <p>Hi friend! Upload a book to start reading or select one from your catalogue!</p>
+    </div>
+    <!-- <a id="prev" href="#prev" class="arrow">‹</a>
+    <a id="next" href="#next" class="arrow">›</a> -->
+
+
+    <script>
+
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Function to get query parameters from the URL
+            function getQueryParams() {
+            const params = {};
+            const queryString = window.location.search.substring(1);
+            const regex = /([^&=]+)=([^&]*)/g;
+            let m;
+            while (m = regex.exec(queryString)) {
+                params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+            }
+            return params;
+            }
+
+            // Fetch and display book details
+            function fetchAndDisplayBookDetails(bookId) {
+            const baseURL = 'http://127.0.0.1:8080'; 
+            fetch(`${baseURL}/book/${bookId}`)
+                .then(response => response.json())
+                .then(book => {
+                const bookDetailsContainer = document.getElementById("bookDetailsContainer");
+                const title = book.volumeInfo.title || "No title available";
+                const authors = book.volumeInfo.authors ? book.volumeInfo.authors.join(", ") : "N/A";
+                const description = book.volumeInfo.description || "No description available";
+                const publisher = book.volumeInfo.publisher || "N/A";
+                const publishedDate = book.volumeInfo.publishedDate || "N/A";
+                const averageRating = book.volumeInfo.averageRating || "No ratings available";
+                const ratingsCount = book.volumeInfo.ratingsCount || "No ratings count available";
+                const coverImageURL = book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.extraLarge || book.volumeInfo.imageLinks.large || book.volumeInfo.imageLinks.medium || book.volumeInfo.imageLinks.thumbnail : null;
+
+                bookDetailsContainer.innerHTML = `
+                    <div class="cover-image">
+                    <img src="${coverImageURL}" alt="${title}">
+                    </div>
+                    <div class="book-details">
+                    <h2>${title}</h2>
+                    <p><strong>Author:</strong> ${authors}</p>
+                    <p><strong>Description:</strong> ${description}</p>
+                    <p><strong>Publisher:</strong> ${publisher}</p>
+                    <p><strong>Published Date:</strong> ${publishedDate}</p>
+                    <p><strong>Average Rating:</strong> ${averageRating}</p>
+                    <p><strong>Ratings Count:</strong> ${ratingsCount}</p>
+                    </div>
+                `;
+                })
+                .catch(error => {
+                console.error('Error fetching book details:', error);
+                });
+            }
+
+            // Get the book ID from the query parameters
+            const params = getQueryParams();
+            const bookId = params.bookId;
+
+            if (bookId) {
+            fetchAndDisplayBookDetails(bookId);
+            } else {
+            console.error('No book ID provided in the URL.');
+            }
+        });
+    </script>
+
+</body>
+</html>
