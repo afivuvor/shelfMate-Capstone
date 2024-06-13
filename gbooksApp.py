@@ -7,7 +7,7 @@ app = Flask(__name__)
 CORS(app)
 
 GOOGLE_BOOKS_API_BASE_URL = "https://www.googleapis.com/books/v1"
-API_KEY = "AIzaSyCH0k-Ojg96MXnzmsp-Wis0FSIxJrOSvgg"
+API_KEY = ""
 
 @app.route("/search", methods=['GET'])
 def search_books():
