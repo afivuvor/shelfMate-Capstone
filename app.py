@@ -17,7 +17,7 @@ CORS(app)
 
 # Google Books API
 GOOGLE_BOOKS_API_BASE_URL = "https://www.googleapis.com/books/v1"
-API_KEY = "AIzaSyCH0k-Ojg96MXnzmsp-Wis0FSIxJrOSvgg"
+API_KEY = ""
 
 
 # DB connection
@@ -29,7 +29,7 @@ dynamodb = boto3.resource(
 )
 
 # Secret key for JWT
-SECRET_KEY = '0sJYDkw7U/ecohfjaGNGTmYL6XEOonUa'
+SECRET_KEY = ''
 if not SECRET_KEY:
     raise ValueError("No JWT_SECRET_KEY set for Flask application")
 
