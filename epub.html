@@ -7,187 +7,106 @@
   <link rel="stylesheet" href="css/index.css">
   <link rel="stylesheet" href="css/read.css">
 
+  <!-- Include EPUB.js library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.5/jszip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/epub.js/0.2.13/epub.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/epub.js/0.2.13/epub.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/epubjs@0.3.88/dist/epub.min.js"></script>
 
-
-  <style type="text/css">
-    ::selection {
-      background: yellow;
-    }
-
-    #extras {
-      width: 600px;
-      margin: 40px auto;
-    }
-
-    #highlights {
-      list-style: none;
-      margin-left: 0;
-      padding: 0;
-    }
-
-    #highlights li {
-      list-style: none;
-      margin-bottom: 20px;
-      border-top: 1px solid #E2E2E2;
-      padding: 10px;
-    }
-
-    #highlights a {
-      display: block;
-    }
-
-    #viewer.spreads {
-      top: 0;
-      margin-top: 50px;
-    }
-
-    [ref="epubjs-mk"] {
-      background: url("data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPScxLjEnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZycgeG1sbnM6eGxpbms9J2h0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsnIHg9JzBweCcgeT0nMHB4JyB2aWV3Qm94PScwIDAgNzUgNzUnPjxnIGZpbGw9JyNCREJEQkQnIGlkPSdidWJibGUnPjxwYXRoIGNsYXNzPSdzdDAnIGQ9J00zNy41LDkuNEMxOS42LDkuNCw1LDIwLjUsNSwzNC4zYzAsNS45LDIuNywxMS4zLDcuMSwxNS42TDkuNiw2NS42bDE5LTcuM2MyLjgsMC42LDUuOCwwLjksOC45LDAuOSBDNTUuNSw1OS4yLDcwLDQ4LjEsNzAsMzQuM0M3MCwyMC41LDU1LjQsOS40LDM3LjUsOS40eicvPjwvZz48L3N2Zz4=") no-repeat;
-      width: 20px;
-      height: 20px;
-      cursor: pointer;
-      margin-left: 0;
-    }
-
-  </style>
 </head>
 <body>
   <div class="top-navbar">
     <div class="logo">
-        <span class="logo-part1">Shelf</span><span class="logo-part2">Mate</span>
+      <span class="logo-part1">Shelf</span><span class="logo-part2">Mate</span>
     </div>
     <div class="menu">
-        <a href="/" class="nav-link">Home</a>
-        <a href="aboutBook.html" class="nav-link">About Book</a> 
-        <a href="read.html" class="nav-link">Read</a>
-        <a href="leaderboard.html" class="nav-link">Leaderboard</a>
-        <a href="catalogue.html" class="nav-link">Catalogue</a>
-        <a href="profile.html" class="nav-link">Profile</a>
+      <a href="/" class="nav-link">Home</a>
+      <a href="aboutBook.html" class="nav-link">About Book</a> 
+      <a href="read.html" class="nav-link">Read</a>
+      <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+      <a href="catalogue.html" class="nav-link">Catalogue</a>
+      <a href="profile.html" class="nav-link">Profile</a>
     </div>
     <input type="text" class="search-box" id="searchInput" placeholder="Search">
   </div>
 
-  <div id="frame">
-    <div id="viewer" class="spreads"></div>
-    <a id="prev" href="#prev" class="arrow">‹</a>
-    <a id="next" href="#next" class="arrow">›</a>
-  </div>
+  <div id="uploadSection">
+    <input type="file" accept=".pdf" id="fileInput">
+    <!-- <button id="submitButton" onclick="loadFromPath()">Submit</button> -->
+    <button id="submitButton">Submit</button>
+    <div class="navigation">
+        <span>Page: <span id="page_num">0</span> / <span id="page_count">0</span></span>
+    </div>
+  </div>  
 
   <!-- <div id="reader">
     <img src="img/reading.png" alt="Reading Icon">
     <p>Hi friend! Upload a book to start reading or select one from your catalogue!</p>
     <canvas id="pdfViewer"></canvas>
-  </div>  -->
+  </div> -->
+
+  <div id="epub-reader">
+    <div id="epubViewer"></div>
+    <a id="prev" href="#prev" class="arrow">‹</a>
+    <a id="next" href="#next" class="arrow">›</a>
+  </div>
 
   <script>
-    // Load the opf
-    var book = ePub("https://<bucket>.s3.eu-west-1.amazonaws.com/<username>/A_Broken_Peoples_Playlist_-_Chimeka_Garricks.epub");
+    document.addEventListener("DOMContentLoaded", function () {
+      var book = null;
+      var rendition = null;
 
-    var rendition = book.renderTo("viewer", {
-      width: "100%",
-      height: 600,
-      ignoreClass: 'annotator-hl',
-      manager: "continuous"
-    });
-
-    var displayed = rendition.display(6);
-
-    // Navigation loaded
-    book.loaded.navigation.then(function(toc){
-      // console.log(toc);
-    });
-
-    var next = document.getElementById("next");
-    next.addEventListener("click", function(){
-      rendition.next();
-    }, false);
-
-    var prev = document.getElementById("prev");
-    prev.addEventListener("click", function(){
-      rendition.prev();
-    }, false);
-
-    var keyListener = function(e){
-
-      // Left Key
-      if ((e.keyCode || e.which) == 37) {
-        rendition.prev();
-      }
-
-      // Right Key
-      if ((e.keyCode || e.which) == 39) {
-        rendition.next();
-      }
-
-    };
-
-    rendition.on("keyup", keyListener);
-    document.addEventListener("keyup", keyListener, false);
-
-    rendition.on("relocated", function(location){
-      // console.log(location);
-    });
-
-
-    // Apply a class to selected text
-    rendition.on("selected", function(cfiRange, contents) {
-      rendition.annotations.highlight(cfiRange, {}, (e) => {
-        console.log("highlight clicked", e.target);
-      });
-      contents.window.getSelection().removeAllRanges();
-
-    });
-
-    this.rendition.themes.default({
-      '::selection': {
-        'background': 'rgba(255,255,0, 0.3)'
-      },
-      '.epubjs-hl' : {
-        'fill': 'yellow', 'fill-opacity': '0.3', 'mix-blend-mode': 'multiply'
-      }
-    });
-
-    // Illustration of how to get text from a saved cfiRange
-    var highlights = document.getElementById('highlights');
-
-    rendition.on("selected", function(cfiRange) {
-
-      book.getRange(cfiRange).then(function (range) {
-        var text;
-        var li = document.createElement('li');
-        var a = document.createElement('a');
-        var remove = document.createElement('a');
-        var textNode;
-
-        if (range) {
-          text = range.toString();
-          textNode = document.createTextNode(text);
-
-          a.textContent = cfiRange;
-          a.href = "#" + cfiRange;
-          a.onclick = function () {
-            rendition.display(cfiRange);
-          };
-
-          remove.textContent = "remove";
-          remove.href = "#" + cfiRange;
-          remove.onclick = function () {
-            rendition.annotations.remove(cfiRange);
-            return false;
-          };
-
-          li.appendChild(a);
-          li.appendChild(textNode);
-          li.appendChild(remove);
-          highlights.appendChild(li);
+      function loadEPUB(url) {
+        // Clean up existing book and rendition
+        if (book) {
+          rendition.destroy();
+          book.destroy();
+          book = null;
+          rendition = null;
         }
 
-      })
+        // Initialize new book and rendition
+        book = ePub(url);
+        rendition = book.renderTo("epubViewer", {
+          width: "100%",
+          height: 600,
+          ignoreClass: 'annotator-hl',
+          manager: "continuous"
+        });
 
+        rendition.display(6); // Display initial page
+
+        // Navigation buttons
+        var next = document.getElementById("next");
+        var prev = document.getElementById("prev");
+
+        next.addEventListener("click", function () {
+          rendition.next();
+        });
+
+        prev.addEventListener("click", function () {
+          rendition.prev();
+        });
+
+        // Handle key events
+        document.addEventListener("keyup", function (e) {
+          switch (e.keyCode) {
+            case 37: // Left arrow key
+              rendition.prev();
+              break;
+            case 39: // Right arrow key
+              rendition.next();
+              break;
+          }
+        });
+
+        // Error handling
+        book.opened.catch(function (error) {
+          console.error("Error opening book", error);
+        });
+      }
+
+      // Example usage: Load EPUB from URL
+      loadEPUB("https://shelfmate-books.s3.eu-west-1.amazonaws.com/senav/It_Ends_with_Us_-_Colleen_Hoover.epub");
     });
 
   </script>
