@@ -3,18 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>EPUB.js Highlights Example</title>
+  <title>ShelfMate - Read ePub</title>
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/read.css">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.5/jszip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/epub.js/0.2.13/epub.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/epub.js/0.2.13/epub.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/epubjs@0.3.88/dist/epub.min.js"></script>
 
-  <link rel="stylesheet" type="text/css" href="examples.css">
 
   <style type="text/css">
     ::selection {
-      background: rgb(226, 83, 197);
+      background: yellow;
     }
 
     #extras {
@@ -55,18 +56,36 @@
   </style>
 </head>
 <body>
+  <div class="top-navbar">
+    <div class="logo">
+        <span class="logo-part1">Shelf</span><span class="logo-part2">Mate</span>
+    </div>
+    <div class="menu">
+        <a href="/" class="nav-link">Home</a>
+        <a href="aboutBook.html" class="nav-link">About Book</a> 
+        <a href="read.html" class="nav-link">Read</a>
+        <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+        <a href="catalogue.html" class="nav-link">Catalogue</a>
+        <a href="profile.html" class="nav-link">Profile</a>
+    </div>
+    <input type="text" class="search-box" id="searchInput" placeholder="Search">
+  </div>
+
   <div id="frame">
     <div id="viewer" class="spreads"></div>
     <a id="prev" href="#prev" class="arrow">‹</a>
     <a id="next" href="#next" class="arrow">›</a>
   </div>
-  <div id="extras">
-    <ul id="highlights"></ul>
-  </div>
+
+  <!-- <div id="reader">
+    <img src="img/reading.png" alt="Reading Icon">
+    <p>Hi friend! Upload a book to start reading or select one from your catalogue!</p>
+    <canvas id="pdfViewer"></canvas>
+  </div>  -->
 
   <script>
     // Load the opf
-    var book = ePub("_OceanofPDF.com_A_Broken_Peoples_Playlist_-_Chimeka_Garricks.epub");
+    var book = ePub("https://shelfmate-books.s3.eu-west-1.amazonaws.com/senav/A_Broken_Peoples_Playlist_-_Chimeka_Garricks.epub");
 
     var rendition = book.renderTo("viewer", {
       width: "100%",
