@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShelfMate - Catalogue</title>
+    <link rel="stylesheet" href="css/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/epubjs/dist/epub.min.js"></script>
+    <style>
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Adjusted to auto-fill */
+            gap: 20px 10px; /* Adjusted the gap */
+            padding: 20px;
+        }
+        .book-cover {
+            width: 170px;
+            height: 270px;
+            object-fit: cover;
+            margin: 10px;
+            margin-right: 20px;
+            cursor: pointer;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-navbar">
+        <div class="logo">
+            <span class="logo-part1">Shelf</span><span class="logo-part2">Mate</span>
+        </div>
+        <div class="menu">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/" class="nav-link">About Book</a>
+            <a href="read.html" class="nav-link">Read</a>
+            <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+            <a href="catalogue.html" class="nav-link">Catalogue</a>
+            <a href="profile.html" class="nav-link">Profile</a>
+        </div>
+        <input type="text" class="search-box" id="searchInput" placeholder="Search">
+    </div>
+
+    <div class="container">
+        <div id="booksContainer"></div>
+    </div>
+
+    <script src="js/search.js"></script>
+    <!-- <script src="js/catalogue.js"></script> -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const BASE_URL = 'http://127.0.0.1:8080';
+
+            function getUsernameFromToken(token) {
+                try {
+                    const decoded = jwt_decode(token);
+                    return decoded.username;
+                } catch (error) {
+                    console.error('Error decoding token:', error);
+                    return null;
+                }
+            }
+
+            let token = localStorage.getItem('jwt');
+            if (!token) {
+                console.error('User not authenticated');
+                return;
+            }
+
+            let username = getUsernameFromToken(token);
+            if (!username) {
+                console.error('Username not found in token');
+                return;
+            }
+
+            async function fetchAndDisplayFiles() {
+                try {
+                    const response = await fetch(`${BASE_URL}/userFiles`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch user files');
+                    }
+
+                    const files = await response.json();
+                    const booksContainer = document.getElementById('booksContainer');
+                    booksContainer.innerHTML = '';
+
+                    files.forEach(file => {
+                        console.log('File:', file);
+                        if (file.name.toLowerCase().endsWith('.pdf')) {
+                            renderPdfCover(file.url, file.name);
+                        } else if (file.name.toLowerCase().endsWith('.epub')) {
+                            renderEpubCover(file.url, file.name);
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error fetching files:', error);
+                }
+            }
+
+            async function renderPdfCover(url, name) {
+                const pdfjsLib = window['pdfjs-dist/build/pdf'];
+                pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+
+                try {
+                    const pdf = await pdfjsLib.getDocument(url).promise;
+                    const page = await pdf.getPage(1);
+                    const viewport = page.getViewport({ scale: 1 });
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    await page.render({ canvasContext: context, viewport: viewport }).promise;
+                    const img = document.createElement('img');
+                    img.src = canvas.toDataURL();
+                    img.alt = name;
+                    img.className = 'book-cover';
+                    img.onclick = () => window.open(url, '_blank');
+                    document.getElementById('booksContainer').appendChild(img);
+                } catch (error) {
+                    console.error('Error rendering PDF cover:', error);
+                }
+            }
+
+            async function renderEpubCover(url, name) {
+                try {
+                    const formData = new FormData();
+                    const response = await fetch(url);
+                    const blob = await response.blob();
+                    formData.append('file', blob, name);
+
+                    const coverResponse = await fetch(`${BASE_URL}/epub_cover`, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (!coverResponse.ok) {
+                        throw new Error('Failed to fetch EPUB cover');
+                    }
+
+                    const coverBlob = await coverResponse.blob();
+                    const coverUrl = URL.createObjectURL(coverBlob);
+
+                    const img = document.createElement('img');
+                    img.src = coverUrl;
+                    img.alt = name;
+                    img.className = 'book-cover';
+                    img.onclick = () => window.open(url, '_blank');
+                    document.getElementById('booksContainer').appendChild(img);
+                } catch (error) {
+                    console.error('Error rendering EPUB cover:', error);
+                }
+            }
+
+            fetchAndDisplayFiles();
+        });
+
+    </script>
+</body>
+</html>

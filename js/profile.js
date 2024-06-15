@@ -44,9 +44,21 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('booksRead').textContent = data.booksRead;
         document.getElementById('pointsEarned').textContent = data.points;
         
-        // Display badges as a comma-separated list of badge names
-        const badgesList = Array.isArray(data.badges) && data.badges.length > 0 ? data.badges.join(", ") : "None";
-        document.getElementById('badgesEarned').textContent = badgesList;
+        // Display badges as images
+        const badgesContainer = document.getElementById('badgesContainer');
+        const badgesEarnedText = document.getElementById('badgesEarned');
+        if (Array.isArray(data.badges) && data.badges.length > 0) {
+            badgesEarnedText.textContent = data.badges; // Change the text
+            data.badges.forEach(badge => {
+                const badgeImg = document.createElement('img');
+                badgeImg.src = `img/awards/badge-${badge.toLowerCase()}.png`;
+                badgeImg.alt = `${badge} badge`;
+                badgeImg.title = `${badge} badge`;
+                badgesContainer.appendChild(badgeImg);
+            });
+        } else {
+            badgesEarnedText.textContent = "1000+ points give you a badge!";
+        }
 
         document.getElementById('streaks').textContent = `${data.streak} days`;
     })

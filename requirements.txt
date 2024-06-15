@@ -7,5 +7,11 @@ boto3==1.34.115
 
 
 nodejs==16.13.0
-npm install gulp
-npm install -g gulp-cli
+npm install jwt-decode
+pip install lxml
+pip install Pillow
+pip install rst2epub2
+io
+pip install apscheduler
+flask_mail
+mailersend

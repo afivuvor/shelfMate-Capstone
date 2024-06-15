@@ -31,14 +31,6 @@
     <!-- Book covers will be dynamically added here -->
   </div>
 
-  <div id="myModal" class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <div id="modalBookDetails"></div>
-    </div>
-  </div>
-
-
   <script src="js/search.js"></script>
 
   <script>
@@ -77,14 +69,14 @@
             const data = JSON.parse(searchResults);
             displayBooks(data);
         } else {
-            // Fetch and display romance books if no search results are present
-            fetch('http://127.0.0.1:8080/category/romance')
+            // Fetch and display fiction books if no search results are present
+            fetch('http://127.0.0.1:8080/search?q=colleen hoover')
                 .then(response => response.json())
                 .then(data => {
                     displayBooks(data);
                 })
                 .catch(error => {
-                    console.error('Error fetching romance books:', error);
+                    console.error('Error fetching books:', error);
                 });
         }
     });

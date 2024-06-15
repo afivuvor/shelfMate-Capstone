@@ -1,92 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ShelfMate</title>
-  <link rel="stylesheet" href="css/index.css">
-  <style>
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShelfMate - Catalogue</title>
+    <link rel="stylesheet" href="css/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/epubjs/dist/epub.min.js"></script>
+    <style>
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Adjusted to auto-fill */
+            gap: 20px 10px; /* Adjusted the gap */
+            padding: 0 20px 20px 20px;
+        }
+        .book-cover {
+            width: 170px;
+            height: 270px;
+            object-fit: cover;
+            margin: 10px;
+            margin-right: 20px;
+            cursor: pointer;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+        .reads {
+            display: flex;
+            gap: 50px;
+            margin-bottom: 0px; /* Pushes the menu items to the left */
+            padding-top: 10px;
+            padding-left: 35px;
+        }
+        .readsText {
+            font-size: 20px;
+            text-decoration: none;
+            color: #807e7e;
+            font-weight: 100;
+            font-family: libre franklin, sans-serif;
+            position: relative;
+        }
+    </style>
 </head>
-
 <body>
     <div class="top-navbar">
         <div class="logo">
-          <span class="logo-part1">Shelf</span><span class="logo-part2">Mate</span>
+            <span class="logo-part1">Shelf</span><span class="logo-part2">Mate</span>
         </div>
         <div class="menu">
-          <a href="/" class="nav-link">Home</a>
-          <a href="/" class="nav-link">About Book</a> 
-          <a href="read.html" class="nav-link">Read</a>
-          <a href="leaderboard.html" class="nav-link">Leaderboard</a>
-          <a href="catalogue.html" class="nav-link">Catalogue</a>
-          <a href="profile.html" class="nav-link">Profile</a>
+            <a href="/" class="nav-link">Home</a>
+            <a href="/" class="nav-link">About Book</a>
+            <a href="read.html" class="nav-link">Read</a>
+            <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+            <a href="catalogue.html" class="nav-link">Catalogue</a>
+            <a href="profile.html" class="nav-link">Profile</a>
         </div>
         <input type="text" class="search-box" id="searchInput" placeholder="Search">
     </div>
 
-    
+    <div class="reads">
+        <span class="readsText">Your Reads :)</span>
+    </div>
+
+    <div class="container">
+        <div id="booksContainer"></div>
+    </div>
+
+
     <script src="js/search.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Function to get query parameters from the URL
-            function getQueryParams() {
-            const params = {};
-            const queryString = window.location.search.substring(1);
-            const regex = /([^&=]+)=([^&]*)/g;
-            let m;
-            while (m = regex.exec(queryString)) {
-                params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
-            }
-            return params;
-            }
-
-            // Fetch and display book details
-            function fetchAndDisplayBookDetails(bookId) {
-            const baseURL = 'http://127.0.0.1:8080'; // Adjust to match your Flask app's URL
-            fetch(`${baseURL}/book/${bookId}`)
-                .then(response => response.json())
-                .then(book => {
-                const bookDetailsContainer = document.getElementById("bookDetailsContainer");
-                const title = book.volumeInfo.title || "No title available";
-                const authors = book.volumeInfo.authors ? book.volumeInfo.authors.join(", ") : "N/A";
-                const description = book.volumeInfo.description || "No description available";
-                const publisher = book.volumeInfo.publisher || "N/A";
-                const publishedDate = book.volumeInfo.publishedDate || "N/A";
-                const averageRating = book.volumeInfo.averageRating || "No ratings available";
-                const ratingsCount = book.volumeInfo.ratingsCount || "No ratings count available";
-                const coverImageURL = book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.extraLarge || book.volumeInfo.imageLinks.large || book.volumeInfo.imageLinks.medium || book.volumeInfo.imageLinks.thumbnail : null;
-
-                bookDetailsContainer.innerHTML = `
-                    <div class="cover-image">
-                    <img src="${coverImageURL}" alt="${title}">
-                    </div>
-                    <div class="book-details">
-                    <h2>${title}</h2>
-                    <p><strong>Author:</strong> ${authors}</p>
-                    <p><strong>Description:</strong> ${description}</p>
-                    <p><strong>Publisher:</strong> ${publisher}</p>
-                    <p><strong>Published Date:</strong> ${publishedDate}</p>
-                    <p><strong>Average Rating:</strong> ${averageRating}</p>
-                    <p><strong>Ratings Count:</strong> ${ratingsCount}</p>
-                    </div>
-                `;
-                })
-                .catch(error => {
-                console.error('Error fetching book details:', error);
-                });
-            }
-
-            // Get the book ID from the query parameters
-            const params = getQueryParams();
-            const bookId = params.bookId;
-
-            if (bookId) {
-            fetchAndDisplayBookDetails(bookId);
-            } else {
-            console.error('No book ID provided in the URL.');
-            }
-        });
-    </script>
+    <script src="js/catalogue.js"></script>
 </body>
 </html>

@@ -6,6 +6,25 @@
   <title>ShelfMate - Leaderboard</title>
   <link rel="stylesheet" href="css/leaderboard.css">
   <link rel="stylesheet" href="css/index.css">
+  <style>
+    .badge-icon {
+      width: 20px; /* Adjust the width as needed */
+      height: auto;
+      vertical-align: middle;
+      margin-right: 5px; /* Space between the badge icons */
+    }
+
+    .rank-icon {
+      width: 20px; /* Adjust the width as needed */
+      height: auto;
+      vertical-align: middle;
+      margin-right: 5px; /* Space between the icon and the rank number */
+    }
+
+    /* tr:first-child {
+      border-bottom: 1.5px solid rgb(245, 107, 144);
+    } */
+  </style>
 </head>
 
 <body>
@@ -45,6 +64,7 @@
   
   <!-- Javascript -->
   <script src="js/leaderboard.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
   <script src="js/search.js"></script>
   </script>
 </body>

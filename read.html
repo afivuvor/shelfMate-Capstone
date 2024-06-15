@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShelfMate - Read</title>
+    <title>ShelfMate - Read pdf</title>
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/read.css">
 </head>
@@ -25,8 +25,8 @@
     </div>
 
     <div id="uploadSection">
-        <input type="file" accept=".pdf" id="fileInput">
-        <button id="submitButton" onclick="loadFromPath()">Submit</button>
+        <input type="file" accept=".pdf, .epub" id="fileInput">
+        <button id="submitButton">Upload & Read</button>
         <div class="navigation">
             <span>Page: <span id="page_num">0</span> / <span id="page_count">0</span></span>
         </div>
@@ -38,9 +38,11 @@
         <canvas id="pdfViewer"></canvas>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jwt-decode/3.1.2/jwt-decode.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
-    <script src="js/read.js"></script> <!-- Script for reading books -->
+    <script src="js/read-pdf.js"></script> 
     <script src="js/search.js"></script> <!-- Script for book searches -->
+
 </body>
 </html>
