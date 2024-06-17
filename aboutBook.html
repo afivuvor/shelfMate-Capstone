@@ -17,7 +17,7 @@
         </div>
         <div class="menu">
           <a href="/" class="nav-link">Home</a>
-          <a href="/" class="nav-link">About Book</a> 
+          <a href="/" class="nav-link active">About Book</a> 
           <a href="read.html" class="nav-link">Read</a>
           <a href="leaderboard.html" class="nav-link">Leaderboard</a>
           <a href="catalogue.html" class="nav-link">Catalogue</a>
@@ -48,7 +48,7 @@
 
             // Fetch and display book details
             function fetchAndDisplayBookDetails(bookId) {
-            const baseURL = 'http://127.0.0.1:8080'; // Adjust to match your Flask app's URL
+            const baseURL = 'http://34.249.29.18:8080'; // Adjust to match your Flask app's URL
             fetch(`${baseURL}/book/${bookId}`)
                 .then(response => response.json())
                 .then(book => {

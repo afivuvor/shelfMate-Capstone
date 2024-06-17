@@ -52,15 +52,15 @@ body {
 }
 
 .top-navbar {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background-color: #ffffff;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      padding: 10px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .logo {
@@ -80,7 +80,7 @@ body {
 .menu {
     display: flex;
     gap: 50px;
-    margin-right: auto; /* Pushes the menu items to the left */
+    margin-right: 15%; 
 }
 
 .menu a {
@@ -95,26 +95,32 @@ body {
 .menu a::after {
     content: '';
     position: absolute;
-    bottom: -2px; /* Adjust as needed to position the line */
+    bottom: -2px;
     left: 0;
     width: 0; /* Initially hidden */
-    height: 2px; /* Thickness of the line */
-    background-color: rgb(226, 65, 108); /* Pink line color */
-    transition: width 0.3s; /* Add transition for smooth effect */
+    height: 1.5px; 
+    background-color: rgb(222, 77, 116); 
+    transition: width 0.3s;
 }
 
 .menu a:hover::after {
     width: 100%; /* Show the line on hover */
 }
 
+.menu a.active::after {
+    width: 100%; /* Show the line for active link */
+}
+
 .search-box {
-    width: 280px; 
+    width: 30%; 
+    max-width: 280px;
     height: 30px;
     border: 1px solid #cccccc;
     border-radius: 5px;
     padding: 5px 10px;
     font-size: 14px;
-    margin-right: 20px; 
+    margin-left: 10px; 
+    margin-right: 15px; 
     position: relative;
 }
 
@@ -126,20 +132,57 @@ body {
 .search-icon {
     width: 24px;
     height: 24px;
-    background-image: url('search-icon.png'); /* Add your search icon image URL here */
+    background-image: url('search.png'); 
     background-size: cover;
     cursor: pointer;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 680px) {
     /* Responsive styles for smaller screens */
+    .top-navbar {
+        padding: 10px 10px;
+    }
+
     .logo {
-      font-size: 20px;
-      margin-right: 10px; /* Adjusted margin for spacing */
+      font-size: 15px;
+      margin-right: 10px; 
     }
 
     .menu {
-      display: none; /* Hide the menu items */
+      gap: 15px; 
+    }
+
+    .menu a {
+      /* display: none;  */
+      font-size: 10px;
+    }
+
+    .search-box {
+      margin-left: 10px; 
     }
 }
 
+@media (max-width: 730px) {
+    /* Responsive styles for smaller screens */
+    .top-navbar {
+        padding: 10px 10px;
+    }
+
+    .logo {
+      font-size: 15px;
+      margin-right: 10px; 
+    }
+
+    .menu {
+      gap: 15px; 
+    }
+
+    .menu a {
+      /* display: none;  */
+      font-size: 10px;
+    }
+
+    .search-box {
+      margin-left: 10px; 
+    }
+}

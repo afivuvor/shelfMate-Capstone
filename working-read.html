@@ -24,7 +24,7 @@
         <div class="menu">
             <a href="/" class="nav-link">Home</a>
             <a href="aboutBook.html" class="nav-link">About Book</a> 
-            <a href="read.html" class="nav-link">Read</a>
+            <a href="read.html" class="nav-link active">Read</a>
             <a href="leaderboard.html" class="nav-link">Leaderboard</a>
             <a href="catalogue.html" class="nav-link">Catalogue</a>
             <a href="profile.html" class="nav-link">Profile</a>
@@ -64,7 +64,7 @@
 
             // Fetch and display book details
             function fetchAndDisplayBookDetails(bookId) {
-            const baseURL = 'http://127.0.0.1:8080'; 
+            const baseURL = 'http://34.249.29.18:8080'; 
             fetch(`${baseURL}/book/${bookId}`)
                 .then(response => response.json())
                 .then(book => {

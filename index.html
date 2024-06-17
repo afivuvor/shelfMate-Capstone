@@ -5,11 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ShelfMate - Home</title>
   <link rel="stylesheet" href="css/index.css">
-  <style>
-    .active {
-      color: rgb(226, 65, 108);
-    } 
-  </style>
 </head>
 <body>
   <div class="top-navbar">
@@ -70,7 +65,7 @@
             displayBooks(data);
         } else {
             // Fetch and display fiction books if no search results are present
-            fetch('http://127.0.0.1:8080/search?q=colleen hoover')
+            fetch('http://34.249.29.18:8080/search?q=yinka, where is your huzband')
                 .then(response => response.json())
                 .then(data => {
                     displayBooks(data);
@@ -81,6 +76,17 @@
         }
     });
   </script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const menuIcon = document.querySelector('.menu-icon');
+      const menu = document.querySelector('.menu');
+
+      menuIcon.addEventListener('click', function() {
+          menu.classList.toggle('show-menu');
+      });
+  });
+</script>
 
 </body>
 </html>

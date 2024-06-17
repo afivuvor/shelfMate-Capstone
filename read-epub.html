@@ -21,7 +21,7 @@
     <div class="menu">
       <a href="/" class="nav-link">Home</a>
       <a href="aboutBook.html" class="nav-link">About Book</a> 
-      <a href="read.html" class="nav-link">Read</a>
+      <a href="read.html" class="nav-link active">Read</a>
       <a href="leaderboard.html" class="nav-link">Leaderboard</a>
       <a href="catalogue.html" class="nav-link">Catalogue</a>
       <a href="profile.html" class="nav-link">Profile</a>
@@ -39,8 +39,10 @@
 
   <div id="epub-reader">
     <span id="epubViewer"></span>
-    <a id="prev" href="#prev" class="arrow">‹</a>
-    <a id="next" href="#next" class="arrow">›</a>
+    <div class="arrow-navigation">
+      <a id="prev" href="#prev" class="arrow">‹</a>
+      <a id="next" href="#next" class="arrow">›</a>
+    </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jwt-decode/3.1.2/jwt-decode.min.js"></script>

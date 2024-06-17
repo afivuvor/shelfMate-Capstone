@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   // Fetch leaderboard data and display it
   async function fetchAndDisplayLeaderboard() {
-    const baseURL = 'http://127.0.0.1:8080'; // Adjust to match your Flask app's URL
+    const baseURL = 'http://34.249.29.18:8080'; // Adjust to match your Flask app's URL
     const token = localStorage.getItem('jwt'); // Assuming the token is stored in localStorage
 
     try {

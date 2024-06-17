@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
           return;
       }
 
-      const baseURL = 'http://127.0.0.1:8080';
+      const baseURL = 'http://34.249.29.18:8080';
       fetch(`${baseURL}/search?q=${encodeURIComponent(query)}`)
           .then(response => response.json())
           .then(data => {

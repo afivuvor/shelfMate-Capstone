@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    fetch('http://127.0.0.1:8080/getUserProfile', {
+    fetch('http://34.249.29.18:8080/getUserProfile', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

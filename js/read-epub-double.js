@@ -79,15 +79,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             // Initialize new book and rendition
             book = ePub(url);
             rendition = book.renderTo("epubViewer", {
-                // width: "50%",
-                // height: 700,
                 width: "100%",
-                height: "100%",
-                spread: "none"
+                height: 600,
+                ignoreClass: "annotator-hl",
+                manager: "continuous",
             });
 
             // Display initial page
-            rendition.display(0);
+            rendition.display(6);
 
             // Navigation buttons
             var next = document.getElementById("next");

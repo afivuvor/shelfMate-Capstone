@@ -18,7 +18,7 @@
     border-radius: 5px;
     width: auto;
     height: auto;
-    object-fit: cover;
+    /* object-fit: cover; */
 }
 
 .book-details {

@@ -3,7 +3,7 @@
     justify-content: center;
     align-items: center;
     margin: 0;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #ebebeb;
 }
 
 #uploadSection input,
@@ -23,41 +23,125 @@
     color: #606062;
 }
 
-#reader {
-    width: 100%;
-    height: 120vh;
-    overflow: auto;
-    position: relative;
-    background-color: #f9f9f9;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-}
-
-#epub-reader {
-    background-color: #f9f9f9;
-}
-
-#reader canvas {
-    width: 55%;
-    height: 100%;
-    display: block;
-    margin: 0 auto;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-
 .navigation span {
     font-size: 16px;
     margin-left: 10px;
 }
 
+/* #epub-reader {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #f9f9f9;
+} */
+
+#epub-reader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+#epubViewer {
+    margin: 0;
+    align-items: center;
+    justify-content: center;
+    width: 50%; 
+    height: 90vh; 
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+/* .arrow-navigation {
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+}
+
+.arrow {
+    color: rgb(226, 65, 108);
+    font-size: 24px;
+    margin-right: 13px;
+} */
+
+.arrow-navigation {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.arrow {
+    font-size: 2em;
+    text-decoration: none;
+    color: rgb(226, 65, 108);
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.arrow#prev {
+    left: 30px;
+}
+
+.arrow#next {
+    right: 30px;
+}
+
+#reader {
+    width: 100%;
+    height: 105vh;
+    overflow: auto;
+    position: relative;
+    background-color: #fff;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#pdfViewer {
+    display: none;
+}
+
+#reader canvas {
+    width: 60%;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+} 
+
+/* Larger screens (desktops, laptops) */
+@media screen and (min-width: 1024px) {
+    #reader canvas {
+        width: 60%; 
+        height: auto; 
+    }
+}
+
+/* High-density screens */
+@media screen and (min-resolution: 2dppx) {
+    #reader canvas {
+        width: 60%;
+        height: auto;
+    }
+}
+
+
 #reader img {
-    margin-top: 12%;
-    max-width: 140px;
+    width: 130px;
+    margin-top: 0px;
+    max-width: 120px;
     margin-bottom: 15px;
 }
 

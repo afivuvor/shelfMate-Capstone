@@ -36,7 +36,6 @@ CORS(app)
 
 # Upload folder for PDFs
 UPLOAD_FOLDER = '/tmp/uploads'
-BUCKET_NAME = ''
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Ensure the upload directory exists
@@ -54,11 +53,11 @@ dynamodb = boto3.resource(
     'dynamodb',
     aws_access_key_id='',
     aws_secret_access_key='',
-    region_name='eu-west-1'
+    region_name=''
 )
 
 # Reference to the 'users' table
-users_table = dynamodb.Table('')
+users_table = dynamodb.Table('users')
 
 
 # s3 connection
@@ -68,7 +67,7 @@ s3 = boto3.client(
     aws_secret_access_key='',
 )
 
-BUCKET_NAME = ''
+BUCKET_NAME = 'shelfmate-bucket'
 
 
 # Secret key for JWT
@@ -118,7 +117,7 @@ def signUp():
 
     try:
         # Create a folder (prefix) for the user in S3 bucket
-        s3.put_object(Bucket='shelfmate-books', Key=f'{user_data["username"]}/')
+        s3.put_object(Bucket=BUCKET_NAME, Key=f'{user_data["username"]}/')
         return jsonify({"message": "User created successfully", "username": user_data["username"]}), 201
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -286,6 +285,7 @@ def list_user_files():
 
 
 # Endpoints to get epub images
+# Author: Antonios Tsolis [https://github.com/doduykhang/epub-cover-extract]
 namespaces = {
     "calibre": "http://calibre.kovidgoyal.net/2009/metadata",
     "dc": "http://purl.org/dc/elements/1.1/",
@@ -376,7 +376,7 @@ def reset_streak():
 
 # Set up the scheduler
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=reset_streak, trigger='cron', hour=00, minute=0)
+scheduler.add_job(func=reset_streak, trigger='cron', hour=1, minute=55)
 
 
 # Update streaks and points endpoint
@@ -658,5 +658,9 @@ def get_book_details(book_id):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=(8080))
+    scheduler.start()  # Start the scheduler before starting the Flask app
+    try:
+        app.run(debug=True, port=(8080))    
+    except (KeyboardInterrupt, SystemExit):
+        scheduler.shutdown()
     

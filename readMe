@@ -9,3 +9,6 @@ Deployment Guide
 + ensure all scripts have necessary permissions to run
 + may need to configure aws using command line
 
+Backend:
+34.249.29.18
+http://34.249.29.18:8080

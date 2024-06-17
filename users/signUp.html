@@ -103,12 +103,12 @@
       </select>
       <select name="occupation" id="occupation" required>
         <option value="" disabled selected>Occupation Category</option>
-        <option value="male">Student</option>
-        <option value="female">Full-time worker</option>
-        <option value="non-binary">Part-time worker</option>
-        <option value="transgender">Intern</option>
-        <option value="neutral">Contractor</option>
-        <option value="other">Self-employed</option>
+        <option value="student">Student</option>
+        <option value="full-time">Full-time worker</option>
+        <option value="part-time">Part-time worker</option>
+        <option value="intern">Intern</option>
+        <option value="contractor">Contractor</option>
+        <option value="self-employed">Self-employed</option>
       </select>
       <input type="text" placeholder="Username" name="username" id="username" required>
       <input type="password" id="password" placeholder="Password" name="password" required>
@@ -160,7 +160,7 @@
         password: password
       };
 
-      fetch("http://127.0.0.1:8080/signUp", {
+      fetch("http://34.249.29.18:8080/signUp", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
