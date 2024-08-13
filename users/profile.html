@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShelfMate - Profile</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <style>
+        #badgesContainer img {
+            width: 60px; /* Adjust the width as needed */
+            height: auto; /* Maintain aspect ratio */
+            margin-right: 10px; /* Space between badges */
+        }
+        #badgesContainer {
+            gap: 20px; /* Adjust the gap between badges */
+            align-items: center;
+            justify-content: center;
+            display: flex;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="top-navbar">
+        <div class="logo">
+            <span class="logo-part1">Shelf</span><span class="logo-part2">Mate</span>
+        </div>
+        <div class="menu">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/" class="nav-link">About Book</a> 
+            <a href="read.html" class="nav-link">Read</a>
+            <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+            <a href="catalogue.html" class="nav-link">Catalogue</a>
+            <a href="profile.html" class="nav-link active">Profile</a>
+        </div>
+        <input type="text" class="search-box" id="searchInput" placeholder="Search">
+    </div>
+
+    <div class="profile-container">
+        <div class="profile-header">@<span id="username"></span></div>
+        <div class="user-details">
+          <img src="/img/profile.png" alt="Profile Image" id="profileImage">
+          <p>Email: <span id="email"></span></p>
+          <p>Gender: <span id="gender"></span></p>
+        </div>
+
+        <div class="statistics">
+          <p>Books Opened: <span id="booksRead">0</span></p>
+          <p>Points Earned: <span id="pointsEarned">0</span></p>
+          <p>Streak: <span id="streaks">0 days</span></p>
+          <p>Badges Earned: <span id="badgesEarned">1000+ points give you a badge!</span></p>
+          <div id="badgesContainer"></div> <!-- Container for badge images -->
+        </div>
+
+        <div class="settings-signout">
+          <a href=""><img src="img/settings.png" alt="Settings" title="Settings"></a>
+          <a href="users/signIn.html" id="signOutLink"><img src="img/signout.png" alt="Sign Out" title="Sign Out"></a>
+        </div>
+    </div>
+    
+    <script src="js/search.js"></script>
+    <script src="js/profile.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+    
+</body>
+</html>

@@ -4,24 +4,7 @@ Start flask server:         flask run
 
 
 
-<<<<<<< HEAD
 Deployment Guide
 + Configure crontab wherever python scripts would be deployed/run
 + ensure all scripts have necessary permissions to run
 + may need to configure aws using command line
-=======
-{
-    "_id": 1,
-    "name": "",
-	"password": "",
-  	"username": "",
-    "email": "",
-	"gender": "",
-    "occupation": "",
-  	"badges": [],
-  	"streak": 0,
-  	"points": 0,
-  	"leaderboard_position": 0,
-  	"link_to_catalogue": ""
-}
->>>>>>> origin/main

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShelfMate - Catalogue</title>
+    <link rel="stylesheet" href="css/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/epubjs/dist/epub.min.js"></script>
+    <style>
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Adjusted to auto-fill */
+            gap: 20px 10px; /* Adjusted the gap */
+            padding: 0 20px 20px 20px;
+        }
+        .book-cover {
+            width: 170px;
+            height: 270px;
+            object-fit: cover;
+            margin: 10px;
+            margin-right: 20px;
+            cursor: pointer;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+        .reads {
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            gap: 60px;
+            padding: 10px;
+            margin: 0;
+            border-bottom: 1px solid #ebebeb;
+        }
+        .readsText {
+            font-size: 20px;
+            text-decoration: none;
+            color: #908e8e;
+            font-weight: 100;
+            font-family: libre franklin, sans-serif;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-navbar">
+        <div class="logo">
+            <span class="logo-part1">Shelf</span><span class="logo-part2">Mate</span>
+        </div>
+        <div class="menu">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/" class="nav-link">About Book</a>
+            <a href="read.html" class="nav-link">Read</a>
+            <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+            <a href="catalogue.html" class="nav-link active">Catalogue</a>
+            <a href="profile.html" class="nav-link">Profile</a>
+        </div>
+        <input type="text" class="search-box" id="searchInput" placeholder="Search">
+    </div>
+
+    <div class="reads">
+        <span class="readsText">Your Reads :)</span>
+    </div>
+
+    <div class="container">
+        <div id="booksContainer"></div>
+    </div>
+
+
+    <script src="js/search.js"></script>
+    <script src="js/catalogue.js"></script>
+</body>
+</html>

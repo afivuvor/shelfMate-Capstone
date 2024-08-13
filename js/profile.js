@@ -18,15 +18,21 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    fetch('http://127.0.0.1:8080/getUserProfile', {
+    fetch('https://shelfmate-app.online/getUserProfile', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
         }
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to fetch user profile');
+        }
+        return response.json();
+    })
     .then(data => {
+        console.log(data); // Log data received from the backend for debugging
         if (data.error) {
             console.error(data.error);
             return;
@@ -34,10 +40,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.getElementById('username').textContent = data.username;
         document.getElementById('email').textContent = data.email;
-        document.getElementById('gender').textContent = data.gender || 'Not specified';
+        document.getElementById('gender').textContent = data.gender;
         document.getElementById('booksRead').textContent = data.booksRead;
         document.getElementById('pointsEarned').textContent = data.points;
-        document.getElementById('badgesEarned').textContent = data.badges;
+        
+        // Display badges as images
+        const badgesContainer = document.getElementById('badgesContainer');
+        const badgesEarnedText = document.getElementById('badgesEarned');
+        if (Array.isArray(data.badges) && data.badges.length > 0) {
+            badgesEarnedText.textContent = data.badges; // Change the text
+            data.badges.forEach(badge => {
+                const badgeImg = document.createElement('img');
+                badgeImg.src = `img/awards/badge-${badge.toLowerCase()}.png`;
+                badgeImg.alt = `${badge} badge`;
+                badgeImg.title = `${badge} badge`;
+                badgesContainer.appendChild(badgeImg);
+            });
+        } else {
+            badgesEarnedText.textContent = "1000+ points give you a badge!";
+        }
+
         document.getElementById('streaks').textContent = `${data.streak} days`;
     })
     .catch(error => {

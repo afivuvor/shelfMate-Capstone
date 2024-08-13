@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShelfMate - Read</title>
+    <title>ShelfMate - Read pdf</title>
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/read.css">
 </head>
@@ -16,7 +16,7 @@
         <div class="menu">
             <a href="/" class="nav-link">Home</a>
             <a href="aboutBook.html" class="nav-link">About Book</a> 
-            <a href="read.html" class="nav-link">Read</a>
+            <a href="read.html" class="nav-link active">Read</a>
             <a href="leaderboard.html" class="nav-link">Leaderboard</a>
             <a href="catalogue.html" class="nav-link">Catalogue</a>
             <a href="profile.html" class="nav-link">Profile</a>
@@ -25,8 +25,8 @@
     </div>
 
     <div id="uploadSection">
-        <input type="file" accept=".pdf" id="fileInput">
-        <button id="submitButton" onclick="loadFromPath()">Submit</button>
+        <input type="file" accept=".pdf, .epub" id="fileInput">
+        <button id="submitButton">Upload & Read</button>
         <div class="navigation">
             <span>Page: <span id="page_num">0</span> / <span id="page_count">0</span></span>
         </div>
@@ -36,11 +36,17 @@
         <img src="img/reading.png" alt="Reading Icon">
         <p>Hi friend! Upload a book to start reading or select one from your catalogue!</p>
         <canvas id="pdfViewer"></canvas>
+        <div class="arrow-navigation">
+            <a id="prev" href="#prev" class="arrow">‹</a>
+            <a id="next" href="#next" class="arrow">›</a>
+        </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jwt-decode/3.1.2/jwt-decode.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
-    <script src="js/read.js"></script> <!-- Script for reading books -->
+    <script src="js/read-pdf.js"></script> 
     <script src="js/search.js"></script> <!-- Script for book searches -->
+
 </body>
 </html>

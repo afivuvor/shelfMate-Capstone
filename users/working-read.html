@@ -3,9 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShelfMate - Profile</title>
+    <title>ShelfMate - Read</title>
     <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/read.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.5/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/epub.js/0.2.13/epub.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/epub.js/0.2.13/epub.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/epubjs@0.3.88/dist/epub.min.js"></script>
+    <script src="js/read.js"></script> <!-- Script for reading books -->
+    <script src="js/search.js"></script> <!-- Script for book searches -->
 </head>
 
 <body>
@@ -15,8 +23,8 @@
         </div>
         <div class="menu">
             <a href="/" class="nav-link">Home</a>
-            <a href="/" class="nav-link">About Book</a> 
-            <a href="read.html" class="nav-link">Read</a>
+            <a href="aboutBook.html" class="nav-link">About Book</a> 
+            <a href="read.html" class="nav-link active">Read</a>
             <a href="leaderboard.html" class="nav-link">Leaderboard</a>
             <a href="catalogue.html" class="nav-link">Catalogue</a>
             <a href="profile.html" class="nav-link">Profile</a>
@@ -24,63 +32,21 @@
         <input type="text" class="search-box" id="searchInput" placeholder="Search">
     </div>
 
-    <div class="profile-container">
-        <div class="profile-header">@<span id="username"></span></div>
-        <div class="user-details">
-          <img src="/img/profile.png" alt="Profile Image" id="profileImage">
-          <p>Email: <span id="email"></span></p>
-          <p>Gender: <span id="gender"></span></p>
-        </div>
-
-        <div class="statistics">
-          <p>Books Read: <span id="booksRead">0</span></p>
-          <p>Points Earned: <span id="pointsEarned">0</span></p>
-          <p>Badges Earned: <span id="badgesEarned">0</span></p>
-          <p>Streaks: <span id="streaks">0 days</span></p>
-        </div>
-
-        <div class="settings-signout">
-          <a href=""><img src="img/settings.png" alt="Settings" title="Settings"></a>
-          <a href="users/signIn.html" id="signOutLink"><img src="img/signout.png" alt="Sign Out" title="Sign Out"></a>
-        </div>
+    <div id="uploadSection">
+        <input type="file" accept=".pdf, .epub, application/epub+zip" id="fileInput">
+        <button id="submitButton">Submit</button>
     </div>
     
-    <script src="js/search.js"></script>
+    <div id="reader">
+        <img src="img/reading.png" alt="Reading Icon">
+        <p>Hi friend! Upload a book to start reading or select one from your catalogue!</p>
+    </div>
+    <!-- <a id="prev" href="#prev" class="arrow">‹</a>
+    <a id="next" href="#next" class="arrow">›</a> -->
+
+
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const token = localStorage.getItem('jwt');
-    
-            if (!token) {
-                console.error('User not authenticated');
-                return;
-            }
-    
-            fetch('http://127.0.0.1:8080/getUserProfile', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    console.error(data.error);
-                    return;
-                }
-    
-                document.getElementById('username').textContent = data.username;
-                document.getElementById('email').textContent = data.email;
-                document.getElementById('gender').textContent = data.gender || 'Not specified';
-                document.getElementById('booksRead').textContent = data.booksRead;
-                document.getElementById('pointsEarned').textContent = data.points;
-                document.getElementById('badgesEarned').textContent = data.badges;
-                document.getElementById('streaks').textContent = `${data.streak} days`;
-            })
-            .catch(error => {
-                console.error('Error fetching user profile:', error);
-            });
-        });
+
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -98,7 +64,7 @@
 
             // Fetch and display book details
             function fetchAndDisplayBookDetails(bookId) {
-            const baseURL = 'http://127.0.0.1:8080'; // Adjust to match your Flask app's URL
+            const baseURL = 'https://shelfmate-app.online'; 
             fetch(`${baseURL}/book/${bookId}`)
                 .then(response => response.json())
                 .then(book => {
@@ -143,5 +109,6 @@
             }
         });
     </script>
+
 </body>
 </html>

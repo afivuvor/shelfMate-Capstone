@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    const BASE_URL = 'http://127.0.0.1:8080';
+    const BASE_URL = 'https://shelfmate-app.online';
     const pdfjsLib = window['pdfjs-dist/build/pdf'];
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
 
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         const pageNumElement = document.getElementById('page_num');
-        if (pageNumElement) pageNumElement.textContent = num;
+        if (pageNumElement) pageNumElement.textContent = `Page ${num}`;
     }
 
     function queueRenderPage(num) {
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
         trackPageTime();
         pageNum++;
         queueRenderPage(pageNum);
-        updateStreakAndPoints(); 
+        updateStreakAndPoints();
     }
 
     function trackPageTime() {
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
         startTime = null;
     }
 
-    function handleFileSelect(event) {
+    async function handleFileSelect(event) {
         const file = event.target.files[0];
         if (file) {
             const fileReader = new FileReader();
@@ -101,19 +101,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 pdfjsLib.getDocument(typedArray).promise.then(pdfDoc_ => {
                     pdfDoc = pdfDoc_;
                     const pageCountElement = document.getElementById('page_count');
-                    if (pageCountElement) pageCountElement.textContent = pdfDoc.numPages;
+                    if (pageCountElement) pageCountElement.textContent = `Total Pages: ${pdfDoc.numPages}`;
                     pageNum = 1;
 
                     const submitButton = document.getElementById('submitButton');
                     if (submitButton) {
-                        submitButton.addEventListener('click', () => {
-                            renderPage(pageNum);
+                        submitButton.addEventListener('click', async () => {
+                            queueRenderPage(pageNum);
                             const reader = document.getElementById('reader');
                             if (reader) {
                                 const img = reader.querySelector('img');
                                 const p = reader.querySelector('p');
                                 if (img) img.style.display = 'none';
                                 if (p) p.style.display = 'none';
+                            }
+
+                            const formData = new FormData();
+                            formData.append('file', file);
+                            formData.append('username', username); // Ensure username is defined
+
+                            try {
+                                const response = await fetch(`${BASE_URL}/upload`, {
+                                    method: 'POST',
+                                    headers: {
+                                        'Authorization': `Bearer ${token}`
+                                    },
+                                    body: formData
+                                });
+
+                                if (!response.ok) {
+                                    throw new Error('File upload failed');
+                                }
+
+                                const result = await response.json();
+                                alert(result.message);
+                                fetchAndDisplayFiles(); // Refresh the list of files
+                            } catch (error) {
+                                console.error('Error uploading file:', error);
                             }
                         });
                     }
@@ -135,13 +159,50 @@ document.addEventListener('DOMContentLoaded', () => {
                 daily_sign_in: true
             })
         });
-    
+
+        if (response.ok) {
+            const result = await response.json();
+            console.log(result.message);
+            console.log('Points after update:', result.points); // Log the updated points
+            await checkAndAwardBadges(result.points); // After the points are updated
+        } else {
+            const error = await response.json();
+            console.error('Error updating streak and points:', error);
+        }
+    }
+
+    async function checkAndAwardBadges(points) {
+        const badgeCriteria = [
+            { threshold: 10000, badge: 'shelfMate' },
+            { threshold: 5000, badge: 'Gold' },
+            { threshold: 2000, badge: 'Silver' },
+            { threshold: 1000, badge: 'Bronze' },
+        ];
+
+        for (const { threshold, badge } of badgeCriteria) {
+            if (points >= threshold) {
+                console.log(`Awarding badge for points: ${points}`);
+                await updateBadge(badge);
+            }
+        }
+    }
+
+    async function updateBadge(badge) {
+        const response = await fetch(`${BASE_URL}/updateBadges`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ badge })
+        });
+
         if (response.ok) {
             const result = await response.json();
             console.log(result.message);
         } else {
             const error = await response.json();
-            console.error('Error updating streak and points:', error);
+            console.error('Error updating badge:', error);
         }
     }
 
